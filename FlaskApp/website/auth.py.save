@@ -1,0 +1,69 @@
+from flask import Blueprint, render_template, request, flash, session, redirect, url_for
+from flask_login import current_user
+import mariadb
+
+connection = mariadb.connect(
+        user="CorendonVluchtBeheer",
+        password="CftE25513j86",
+        host="127.0.0.1",
+        port=3306,
+        database="fys"
+
+cursor = connection.cursor()
+
+auth = Blueprint('auth', __name__)
+
+@auth.route('/home')
+def home():
+    return render_template("home.html")
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    session["logged_in"] = "No"
+    if request.method == 'POST':
+        query_seat_number = "SELECT seat_number FROM login_credentials WHERE seat_number = %s;"  
+        query_last_name = "SELECT last_name FROM login_credentials WHERE last_name = %s;"
+        seat_number = request.form.get('seatnumber')
+        last_name = request.form.get('lastname')
+        cursor.execute(query_seatnumber, (seat_number, ))
+        
+
+    return render_template("login.html")
+
+@auth.route('/multimedia')
+def multimedia():
+    return render_template("multimedia.html")
+
+@auth.route('/contacts')
+def contacts():
+    return render_template("contacts.html")
+
+@auth.route('/sign-up', methods=['GET', 'POST'])
+def sign_up():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        firstName = request.form.get('firstName')
+        password1 = request.form.get('password1')
+        password2 = request.form.get('password2')
+
+        if len(email) < 4:
+            flash('email must be greater than 3 characters.', category='error')
+        elif len(firstName) < 2:
+            flash('First name must be greater than 1 characters.', category='error')
+        elif password1 != password2:
+            flash('Passwords don\'t match', category='success')
+        elif len(password1) < 7:
+            flash('Password must be atleast 7 characters.', category='error')
+        else:
+            #add user to database
+            flash('account created!', category='succes')
+
+
+    return render_template("sign_up.html")
+
+@auth.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    session.pop('username', None)
+    return redirect(url_for('views.home'))
+
