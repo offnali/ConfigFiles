@@ -13,4 +13,12 @@ sudo apt autoremove -y ## Onnodige packages verwijderen.
 
 sudo echo "Installing packages"
 sudo apt-get install apache2 libapache2-mod-wsgi-py3 python3-pip python3.10-venv -y
-sudo mv Flask
+sudo python3 -m venv venv 
+sudo mv /ConfigFiles/FlaskApp /
+sudo mv /ConfigFiles/FlaskApp.conf /etc/apache2/sites-available/
+sudo chmod 644 /etc/apache2/sites-available/FlaskApp.conf
+sudo a2dissite 000-default
+sudo a2ensite FlaskApp
+. venv/bin/activate
+sudo pip install website
+deactivate
