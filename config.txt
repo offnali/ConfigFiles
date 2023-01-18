@@ -1,1 +1,16 @@
+### UPDATEN VAN DE OS
 
+echo "Fixing updates"
+cd /
+sudo apt update -y ### Package list updaten.
+#sudo apt upgrade -y 
+echo "Done updating!"
+sudo apt autoremove -y ## Onnodige packages verwijderen.
+
+### KLAAR MET UPDATEN
+
+### Opstellen van de Flask applicatie
+
+sudo echo "Installing packages"
+sudo apt-get install apache2 libapache2-mod-wsgi-py3 python3-pip python3.10-venv -y
+sudo mv Flask
