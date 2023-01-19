@@ -26,3 +26,7 @@ sudo a2ensite FlaskApp
 sudo pip install website
 deactivate
 sudo systemctl restart apache2
+
+### Opstellen van de openssl
+
+Apt-get install apache2 openssl -y
